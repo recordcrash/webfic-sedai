@@ -1,14 +1,11 @@
-import { useMemo, useRef, useState, useEffect } from "react"
+import { useRef, useEffect } from "react"
 import animeData, { getAnimeTitle } from "../anime-data"
 import { domToBlob } from "modern-screenshot"
 import { toast } from "sonner"
+import { t } from './strings'
 import { usePersistState } from "./hooks"
-import { useI18n } from "./i18n-context"
-import { LanguageToggle } from "./LanguageToggle"
-import { getPromptTemplate } from "./i18n"
 
 export const App = () => {
-  const { t, language } = useI18n()
   const [selectedAnime, setSelectedAnime] = usePersistState<string[]>(
     "selectedAnime",
     []
@@ -18,7 +15,7 @@ export const App = () => {
 
   useEffect(() => {
     document.title = t("title")
-  }, [language, t])
+  }, [t])
 
   const imageToBlob = async () => {
     if (!wrapper.current) return
@@ -65,58 +62,14 @@ export const App = () => {
     URL.revokeObjectURL(url)
   }
 
-  const [promptType, setPromptType] = useState<"normal" | "zako">("zako")
-  const prompt = useMemo(() => {
-    const templates = getPromptTemplate(language)
-    const preset = promptType === "normal" ? templates.normal : templates.zako
-
-    return `
-${preset}
-${
-  t("watched") === "Watched"
-    ? "User anime viewing record: (the year below is the anime release year)"
-    : "用户动画观看记录：(下面的年份是动画发布的年份)"
-}
-${Object.keys(animeData)
-  .map((year) => {
-    const items = animeData[year] || []
-
-    if (items.length === 0) return ""
-
-    const sliceItems = items.slice(0, 12)
-    const watched = sliceItems
-      .filter((item) => selectedAnime.includes(getAnimeTitle(item, "zh")))
-      .map((item) => getAnimeTitle(item, language))
-      .join(", ")
-    const unWatched = sliceItems
-      .filter((item) => !selectedAnime.includes(getAnimeTitle(item, "zh")))
-      .map((item) => getAnimeTitle(item, language))
-      .join(", ")
-
-    return [
-      `**${year}${t("year")}**:`,
-      `${t("watched")}: ${watched || t("none")}`,
-      `${t("notWatched")}: ${unWatched || t("none")}`,
-    ]
-      .filter(Boolean)
-      .join("\n")
-  })
-  .filter(Boolean)
-  .join("\n")}
-    `.trim()
-  }, [selectedAnime, promptType, language, t])
-
   const totalAnime = Object.values(animeData).flatMap((year) => {
-    return year.map((item) => getAnimeTitle(item, "zh")).slice(0, 12)
+    return year.map((item) => getAnimeTitle(item)).slice(0, 12)
   }).length
 
   return (
     <>
       <div className="flex flex-col gap-4 pb-10">
         <div className="p-4 flex flex-col md:items-center">
-          <div className="flex justify-end mb-4">
-            <LanguageToggle />
-          </div>
           <div className="w-full overflow-x-auto">
             <div
               className="flex flex-col border border-b-0 bg-white w-fit mx-auto"
@@ -144,38 +97,28 @@ ${Object.keys(animeData)
                     <div
                       className={`
                       bg-red-500 shrink-0 text-white flex items-center font-bold justify-center p-1 border-black
-                      h-16 md:h-20 
-                      ${language === "en" ? "w-16 md:w-20" : "w-16 md:w-20"}
+                      h-16 md:h-20 w-16 md:w-20
                     `}
                     >
                       <span
-                        className={`${
-                          language === "en"
-                            ? "text-sm md:text-base"
-                            : "text-base"
-                        } text-center`}
+                        className="text-base text-sm md:text-base text-center"
                       >
                         {year}
                       </span>
                     </div>
                     <div className="flex shrink-0">
                       {items.slice(0, 12).map((item) => {
-                        const animeKey = getAnimeTitle(item, "zh")
-                        const displayTitle = getAnimeTitle(item, language)
+                        const animeKey = getAnimeTitle(item)
+                        const displayTitle = getAnimeTitle(item)
                         const isSelected = selectedAnime.includes(animeKey)
                         return (
                           <button
                             key={animeKey}
                             className={`
                               h-16 md:h-20 
-                              ${
-                                language === "en"
-                                  ? "w-20 md:w-24"
-                                  : "w-16 md:w-20"
-                              }
+                              w-20 md:w-24
                               border-l break-words text-center shrink-0 inline-flex items-center 
-                              p-1 overflow-hidden justify-center cursor-pointer 
-                              ${language === "en" ? "text-xs" : "text-sm"} 
+                              p-1 overflow-hidden justify-center cursor-pointer text-xs 
                               ${
                                 isSelected
                                   ? "bg-green-500"
@@ -196,11 +139,7 @@ ${Object.keys(animeData)
                             }}
                           >
                             <span
-                              className={`leading-tight w-full ${
-                                language === "en"
-                                  ? "line-clamp-4"
-                                  : "line-clamp-3"
-                              }`}
+                              className="leading-tight w-full line-clamp-4"
                             >
                               {displayTitle}
                             </span>
@@ -212,15 +151,7 @@ ${Object.keys(animeData)
                         (_, index) => (
                           <div
                             key={`empty-${index}`}
-                            className={`
-                            h-16 md:h-20 
-                            ${
-                              language === "en"
-                                ? "w-20 md:w-24"
-                                : "w-16 md:w-20"
-                            }
-                            border-l bg-gray-50
-                          `}
+                            className="h-16 md:h-20 w-20 md:w-24 border-l bg-gray-50"
                           />
                         )
                       )}
@@ -241,7 +172,7 @@ ${Object.keys(animeData)
               setSelectedAnime(
                 Object.values(animeData).flatMap((year) => {
                   return year
-                    .map((item) => getAnimeTitle(item, "zh"))
+                    .map((item) => getAnimeTitle(item))
                     .slice(0, 12)
                 })
               )
@@ -305,104 +236,23 @@ ${Object.keys(animeData)
           </button>
         </div>
 
-        <div className="flex flex-col gap-2 max-w-screen-md w-full mx-auto">
-          <div className="border focus-within:ring-2 ring-pink-500 focus-within:border-pink-500 rounded-md">
-            <div className="flex items-center justify-between p-2 border-b">
-              <div className="flex items-center gap-2">
-                <span>{t("promptType")}</span>
-                <select
-                  className="border rounded-md"
-                  value={promptType}
-                  onChange={(e) => {
-                    setPromptType(e.currentTarget.value as any)
-                  }}
-                >
-                  <option value="normal">{t("promptNormal")}</option>
-                  <option value="zako">{t("promptZako")}</option>
-                </select>
-              </div>
-
-              <div className="flex items-center gap-4">
-                <button
-                  type="button"
-                  className="text-sm text-zinc-500 hover:bg-zinc-100 px-1.5 h-7 flex items-center rounded-md"
-                  onClick={() => {
-                    navigator.clipboard.writeText(prompt)
-                    toast.success(t("copySuccess"))
-                  }}
-                >
-                  {t("copy")}
-                </button>
-
-                <button
-                  type="button"
-                  className="text-sm text-zinc-500 hover:bg-zinc-100 px-1.5 h-7 flex items-center rounded-md"
-                  onClick={() => {
-                    location.href = `chatwise://chat?input=${encodeURIComponent(
-                      prompt
-                    )}`
-                  }}
-                >
-                  {t("openInChatWise")}
-                </button>
-              </div>
-            </div>
-            <textarea
-              readOnly
-              className="outline-none w-full p-2 resize-none cursor-default"
-              rows={10}
-              value={prompt}
-            />
-          </div>
-        </div>
-
         <div className="mt-2 text-center">
           {t("footer")}
-          <a
-            href={
-              language === "zh"
-                ? "https://x.com/localhost_4173"
-                : "https://x.com/localhost_5173"
-            }
+          Makin @ <a
+            href="https://recordcrash.substack.com"
             target="_blank"
             className="underline"
           >
-            {language === "zh" ? "低空飞行" : "egoist"}
+             Record Crash
           </a>
           {t("madeBy")}
           <a
-            href="https://github.com/egoist/anime-sedai"
+            href="https://github.com/recordcrash/webfic-sedai"
             target="_blank"
             className="underline"
           >
             {t("viewCode")}
           </a>
-        </div>
-
-        {language === "en" && (
-          <div className="text-center text-sm text-gray-600">
-            English version is translated by{" "}
-            <a
-              href="https://mhh0318.github.io/"
-              target="_blank"
-              className="underline"
-            >
-              h1t
-            </a>
-          </div>
-        )}
-
-        <div className="text-center">
-          {t("otherProducts")}
-          <a
-            href="https://chatwise.app"
-            target="_blank"
-            className="underline inline-flex items-center gap-1"
-          >
-            <img src="https://chatwise.app/favicon.png" className="size-4" />{" "}
-            ChatWise
-          </a>
-          {t("aiChatClient")}
         </div>
       </div>
     </>

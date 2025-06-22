@@ -1,6 +1,6 @@
 # Webfic Sedai
 
-A fork of Anime Sedai, where you can fill in a list of popular webfic you've read instead of anime you've watched.
+A fork of [Anime Sedai](https://anime-sedai.egoist.dev/). In this one, you can fill in a list of popular webfic you've read to share instead of anime you've watched.
 
 ## Usage
 
