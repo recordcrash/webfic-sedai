@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "anime",
+      "name": "webfic-sedai",
       "dependencies": {
         "cheerio": "^1.0.0",
         "react": "^19.1.0",

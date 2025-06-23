@@ -1,13 +1,13 @@
 import { useRef, useEffect } from "react"
-import animeData, { getAnimeTitle } from "../anime-data"
+import webficData, { getWebficTitle } from "../webfic-data"
 import { domToBlob } from "modern-screenshot"
 import { toast } from "sonner"
 import { t } from './strings'
 import { usePersistState } from "./hooks"
 
 export const App = () => {
-  const [selectedAnime, setSelectedAnime] = usePersistState<string[]>(
-    "selectedAnime",
+  const [selectedWebfic, setSelectedWebfic] = usePersistState<string[]>(
+    "selectedWebfic",
     []
   )
 
@@ -56,15 +56,30 @@ export const App = () => {
 
     const a = document.createElement("a")
     a.href = url
-    a.download = "anime-sedai.png"
+    a.download = "webfic-sedai.png"
     a.click()
 
     URL.revokeObjectURL(url)
   }
 
-  const totalAnime = Object.values(animeData).flatMap((year) => {
-    return year.map((item) => getAnimeTitle(item)).slice(0, 12)
+  const totalWebfic = Object.values(webficData).flatMap((year) => {
+    return year.map((item) => getWebficTitle(item)).slice(0, 12)
   }).length
+
+  const bucketed: Record<string, typeof webficData[string]> = {};
+  Object.entries(webficData).forEach(([year, items]) => {
+    const num = parseInt(year.replace(/\D/g, ""), 10);
+    const key = num <= 2010 ? "≤2010" : year;
+    if (!bucketed[key]) bucketed[key] = [];
+    bucketed[key].push(...items);
+  });
+
+  // ② Sort the bucket keys however you like
+  const years = Object.keys(bucketed).sort((a, b) => {
+    if (a === "≤2010") return -1;
+    if (b === "≤2010") return 1;
+    return parseInt(a, 10) - parseInt(b, 10);
+  });
 
   return (
     <>
@@ -85,13 +100,13 @@ export const App = () => {
                 </h1>
                 <span className="shrink-0 whitespace-nowrap">
                   {t("watchedCount", {
-                    count: selectedAnime.length,
-                    total: totalAnime,
+                    count: selectedWebfic.length,
+                    total: totalWebfic,
                   })}
                 </span>
               </div>
-              {Object.keys(animeData).map((year) => {
-                const items = animeData[year] || []
+              {years.map((year) => {
+                const items = bucketed[year] || []
                 return (
                   <div key={year} className="flex border-b">
                     <div
@@ -108,12 +123,12 @@ export const App = () => {
                     </div>
                     <div className="flex shrink-0">
                       {items.slice(0, 12).map((item) => {
-                        const animeKey = getAnimeTitle(item)
-                        const displayTitle = getAnimeTitle(item)
-                        const isSelected = selectedAnime.includes(animeKey)
+                        const webficKey = getWebficTitle(item)
+                        const displayTitle = getWebficTitle(item)
+                        const isSelected = selectedWebfic.includes(webficKey)
                         return (
                           <button
-                            key={animeKey}
+                            key={webficKey}
                             className={`
                               h-16 md:h-20 
                               w-20 md:w-24
@@ -128,13 +143,13 @@ export const App = () => {
                             `}
                             title={displayTitle}
                             onClick={() => {
-                              setSelectedAnime((prev) => {
+                              setSelectedWebfic((prev) => {
                                 if (isSelected) {
                                   return prev.filter(
-                                    (title) => title !== animeKey
+                                    (title) => title !== webficKey
                                   )
                                 }
-                                return [...prev, animeKey]
+                                return [...prev, webficKey]
                               })
                             }}
                           >
@@ -169,10 +184,10 @@ export const App = () => {
             type="button"
             className="border rounded-md px-4 py-2 inline-flex"
             onClick={() => {
-              setSelectedAnime(
-                Object.values(animeData).flatMap((year) => {
+              setSelectedWebfic(
+                Object.values(webficData).flatMap((year) => {
                   return year
-                    .map((item) => getAnimeTitle(item))
+                    .map((item) => getWebficTitle(item))
                     .slice(0, 12)
                 })
               )
@@ -181,12 +196,12 @@ export const App = () => {
             {t("selectAll")}
           </button>
 
-          {selectedAnime.length > 0 && (
+          {selectedWebfic.length > 0 && (
             <button
               type="button"
               className="border rounded-md px-4 py-2 inline-flex"
               onClick={() => {
-                setSelectedAnime([])
+                setSelectedWebfic([])
               }}
             >
               {t("clear")}
