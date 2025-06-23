@@ -56,7 +56,7 @@ export const App = () => {
 
     const a = document.createElement("a")
     a.href = url
-    a.download = "webfic-sedai.png"
+    a.download = "ages-of-webfic.png"
     a.click()
 
     URL.revokeObjectURL(url)

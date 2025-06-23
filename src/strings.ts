@@ -1,5 +1,5 @@
 const EN = {
-  title: 'Webfic Sedai',
+  title: 'Ages of Webfic',
   subtitle: 'Click to select webfic you have read',
   website: 'webfic.recordcrash.com',
   watchedCount: 'I have read {{count}}/{{total}} webfic',
@@ -15,7 +15,7 @@ const EN = {
   downloading: 'Downloading',
   unknownError: 'Unknown error',
   copy: 'Copy',
-  footer: 'Most read webfic by year, data came to author in a dream, made by ',
+  footer: 'Data from RoyalRoad and multiple fiction sites, sorted on vibes, made by ',
   madeBy: ', ',
   viewCode: 'View Code',
   otherProducts: 'Other products by the author: ',
