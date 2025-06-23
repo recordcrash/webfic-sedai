@@ -1,244 +1,207 @@
 type WebficItem = {
   title: string
-  score: number
 }
 
 type Data = {
   [key: string]: WebficItem[]
 }
 
-const data: Data = {
+// Raw mapping of years to arrays of titles
+const rawData: Record<string, string[]> = {
   "≤2010": [
-    {
-      title: "Fine Structure",
-      score: 0.0,
-    },
-    {
-      title: "Tales of Mu",
-      score: 0.0,
-    },
-    {
-      title: "Saga of Soul",
-      score: 0.0,
-    },
-    {
-      title: "Dungeon Keeper Ami",
-      score: 0.0,
-    },
-    {
-      title: "Harry Potter and the Methods of Rationality",
-      score: 0.0,
-    },
-    {
-      title: "Luminosity",
-      score: 0.0,
-    },
+    "Harry Potter and the Methods of Rationality",
+    "John Dies at the End",
+    "The Legion of Nothing",
+    "Super Powereds",
+    "Homestuck",
+    "Luminosity",
+    "Fine Structure",
+    "Dungeon Keeper Ami",
+    "Three Worlds Collide",
+    "The Metamorphosis of Prime Intellect",
+    "Tales of Mu",
+    "Saga of Soul",
   ],
-  "2011": [
-    {
-      title: "Worm",
-      score: 0.0,
-    },
-    {
-      title: "Mother of Learning",
-      score: 0.0,
-    },
-    {
-      title: "To the Stars",
-      score: 0.0,
-    },
+  "2011-12": [
+    "Worm",
+    "The Martian",
+    "Mother of Learning",
+    "To the Stars",
+    "Friendship Is Optimal",
+    "The Last Angel",
+    "Fallout: Equestria",
+    "Harry Potter and the Natural 20",
+    "Dreaming of Sunshine",
+    "The New World",
+    "Brennus",
+    "The Haventon Chronicles",
   ],
-  "2012": [
-    {
-      title: "Friendship Is Optimal",
-      score: 0.0,
-    },
-  ],
-  "2013": [
-    {
-      title: "Pokemon Toos",
-      score: 0.0,
-    },
-    {
-      title: "Lighting Up the Dark",
-      score: 0.0,
-    },
-    {
-      title: "Ra",
-      score: 0.0,
-    },
-    {
-      title: "Pact",
-      score: 0.0,
-    },
-    {
-      title: "Stone Burners",
-      score: 0.0,
-    },
-  ],
-  "2014": [
-    {
-      title: "Twig",
-      score: 0.0,
-    },
-    {
-      title: "Floornight",
-      score: 0.0,
-    },
+  "2013-14": [
+    "Pact",
+    "The Zombie Knight",
+    "The Gods are Bastards",
+    "With This Ring",
+    "The Metropolitan Man",
+    "City of Angles",
+    "Ra",
+    "Pokemon: The Origin of Species",
+    "The Two Year Emperor",
+    "Stone Burners",
+    "Twisted Cogs",
+    "Floornight",
   ],
   "2015": [
-    {
-      title: "R! Animorphs",
-      score: 0.0,
-    },
-    {
-      title: "The Waves Arisen",
-      score: 0.0,
-    },
-    {
-      title: "Fargo",
-      score: 0.0,
-    },
-    {
-      title: "Marked for Death",
-      score: 0.0,
-    },
-    {
-      title: "A Practical Guide to Evil",
-      score: 0.0,
-    },
-    {
-      title: "The Northern Caves",
-      score: 0.0,
-    },
+    "Twig",
+    "A Practical Guide to Evil",
+    "Reverend Insanity",
+    "The Iron Teeth: A Goblin's Tale",
+    "A Hero's War",
+    "The Fifth Defiance",
+    "The Northern Caves",
+    "Void Domain",
+    "The Waves Arisen",
+    "Fargo",
+    "Marked for Death",
+    "Set In Stone",
   ],
   "2016": [
-    {
-      title: "UNSONG",
-      score: 0.0,
-    },
-    {
-      title: "Cordyceps",
-      score: 0.0,
-    },
-    {
-      title: "Almost Nowhere",
-      score: 0.0,
-    },
-    {
-      title: "Forty Millenniums of Cultivation",
-      score: 0.0,
-    },
+    "The Wandering Inn",
+    "Savage Divinity",
+    "Forty Millenniums of Cultivation",
+    "Unsong",
+    "Everybody Loves Large Chests",
+    "Arcane Emperor",
+    "How to Avoid Death on a Daily Basis",
+    "Crystal Society",
+    "Cordyceps",
+    "The Eagle's Flight",
+    "Shadows of the Limelight",
+    "Almost Nowhere",
   ],
   "2017": [
-    {
-      title: "Worth the Candle",
-      score: 0.0,
-    },
-    {
-      title: "The World As It Appears",
-      score: 0.0,
-    },
-    {
-      title: "The Erogamer",
-      score: 0.0,
-    },
-    {
-      title: "Modern Cannibals",
-      score: 0.0,
-    },
-    {
-      title: "Ward",
-      score: 0.0,
-    },
+    "Ward",
+    "The Legend of Randidly Ghosthound",
+    "Worth the Candle",
+    "The World As It Appears To Be",
+    "Ave Xia Rem Y",
+    "Cultivation Chat Group",
+    "17776",
+    "The New World",
+    "Metaworld Chronicles",
+    "The Good Student",
+    "Modern Cannibals",
+    "The Erogamer",
   ],
   "2018": [
-    {
-      title: "Chicago",
-      score: 0.0,
-    },
-    {
-      title: "The Gig Economy",
-      score: 0.0,
-    },
+    "Omniscient Reader's Viewpoint",
+    "RE: Trailer Trash",
+    "Lord of the Mysteries",
+    "Forge of Destiny",
+    "There is no Epic Loot here, Only Puns",
+    "The Daily Grind",
+    "Super Minion",
+    "Epilogue",
+    "Into the Mire",
+    "The Law of Averages",
+    "The Gig Economy",
+    "Chicago",
   ],
   "2019": [
-    {
-      title: "Chili Chocolate Factory",
-      score: 0.0,
-    },
-    {
-      title: "The Flower That Bloomed Nowhere",
-      score: 0.0,
-    },
-    {
-      title: "Wake of the Ravager",
-      score: 0.0,
-    },
-    {
-      title: "Katalepsis",
-      score: 0.0,
-    },
-    {
-      title: "Pale",
-      score: 0.0,
-    },
-    {
-      title: "God-Shaped Hole",
-      score: 0.0,
-    },
-    {
-      title: "Vainqueur the Dragon",
-      score: 0.0,
-    },
+    "Pale",
+    "Chrysalis",
+    "Delve",
+    "Vainqueur the Dragon",
+    "Katalepsis",
+    "Blue Core",
+    "He Who Fights With Monsters",
+    "Azarynth Healer",
+    "The Flower That Bloomed Nowhere",
+    "Wake of the Ravager",
+    "Ar'Kendrithyst",
+    "Chili and the Chocolate Factory: Fudge Revelation",
   ],
-  "2020": [],
-  "2021": [],
+  "2020": [
+    "Dungeon Crawler Carl",
+    "The Primal Hunter",
+    "The Runesmith",
+    "Stray Cat Strut",
+    "The Perfect Run",
+    "Borne of Caution",
+    "Prophecy Approved Companion",
+    "The Hedge Wizard",
+    "Cinnamon Bun",
+    "A Practical Guide to Sorcery",
+    "Castle Kingside",
+    "Never Die Twice",
+  ],
+  "2021": [
+    "Beware of Chicken",
+    "Vigor Mortis",
+    "Virtuous Sons",
+    "Peculiar Soul",
+    "The Last Orellen",
+    "Fox’s Tongue and Kirin’s Bone",
+    "Kitty Cat Kill Sat",
+    "12 Miles Below",
+    "Jackal Among Snakes",
+    "Only Villains Do That",
+    "Nowhere Stars",
+    "This Used to Be About Dungeons",
+  ],
   "2022": [
-    {
-      title: "Cockatiel x Chameleon",
-      score: 0.0,
-    },
-    {
-      title: "Time to Orbit Unknown",
-      score: 0.0,
-    },
+    "Paranoid Mage",
+    "Necroepilogos",
+    "Industrial Strength Magic",
+    "Player Manager",
+    "Time to Orbit: Unknown",
+    "A Soldier's Life",
+    "Ghost in the City",
+    "Heretical Oaths",
+    "The Type Specialist",
+    "I Will Touch the Skies",
+    "Thresholder",
+    "Planecrash",
   ],
   "2023": [
-    {
-      title: "Super Supportive",
-      score: 0.0,
-    },
+    "Super Supportive",
+    "Pale Lights",
+    "Zenith of Sorcery",
+    "The Game at Carousel",
+    "Chasing Sunlight",
+    "Bog Standard Isekai",
+    "Slumrat Rising",
+    "Hoard",
+    "Rock falls, everyone dies",
+    "Sublight Drive",
+    "Path of Dragons",
+    "Chains of a Time Loop",
   ],
   "2024": [
-    {
-      title: "When I Win the World Ends",
-      score: 0.0,
-    },
-    {
-      title: "Seek",
-      score: 0.0,
-    },
+    "Claw",
+    "The Legend of William Oh",
+    "Saving the school would have been easier as a cafeteria worker",
+    "Seek",
+    "The Years of Apocalypse",
+    "Systema Delenda Est",
+    "The Stubborn Skill-Grinder In A Time Loop",
+    "Sunspot",
+    "Gunsoul",
+    "Cultivation Nerd",
+    "Path to Transcendence",
+    "When I Win the World Ends",
   ],
-  "2025": [
-    {
-      title: "Inkbound",
-      score: 0.0,
-    },
-    {
-      title: "Khaos Architect",
-      score: 0.0,
-    },
-    {
-      title: "House of Bastards",
-      score: 0.0,
-    },
-  ],
-};
+}
 
+// Transform rawData into the desired Data shape
+const data: Data = Object.fromEntries(
+  Object.entries(rawData).map(([year, titles]) => [
+    year,
+    titles.map((title) => ({ title }))
+  ])
+) as Data
 
 export const getWebficTitle = (webfic: WebficItem): string => {
-  return webfic["title"] as string
+  return webfic.title
 }
 
 export default data
