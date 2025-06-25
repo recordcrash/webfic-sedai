@@ -1,8 +1,10 @@
 const EN = {
   title: 'Ages of Webfic',
-  subtitle: 'Click to select webfic you have read',
+  subtitle: 'Click to select webfics you have read',
   website: 'webfic.recordcrash.com',
-  readCount: 'I have read {{count}}/{{total}} webfic',
+  websiteAuthor: 'Makin',
+  websiteName: 'Record Crash',
+  readCount: 'I have read {{count}}/{{total}} webfics',
   selectAll: 'Select All',
   clear: 'Clear',
   copyImage: 'Copy Image',

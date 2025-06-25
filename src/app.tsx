@@ -252,9 +252,9 @@ export const App = () => {
 
         {/* Footer */}
         <div className="mt-2 text-center border-t pt-2">
-          {t("footer")} Makin @{" "}
+          {t("footer")} {t("websiteAuthor")} @{" "}
           <a href="https://recordcrash.substack.com" target="_blank" className="underline">
-            Record Crash
+            {t("website")}
           </a>
           {t("madeBy")}
           <a href="https://github.com/recordcrash/webfic-sedai" target="_blank" className="underline">
