@@ -128,7 +128,7 @@ export const App = () => {
                       return (
                         <button
                           key={key}
-                          className={`h-16 md:h-20 w-20 md:w-24 border-l break-words text-center shrink-0 inline-flex items-center p-1 overflow-hidden justify-center cursor-pointer text-xs ${bgClass}`}
+                          className={`h-16 md:h-20 w-20 md:w-24 border-l break-words text-center shrink-0 flex-col justify-center p-1 overflow-hidden cursor-pointer text-xs ${bgClass}`}
                           title={key}
                           onClick={() =>
                             setStatusMap((prev) => {
@@ -141,7 +141,7 @@ export const App = () => {
                             })
                           }
                         >
-                          <span className="leading-tight w-full line-clamp-4">
+                          <span className="leading-tight w-full break-words whitespace-normal line-clamp-4">
                             {key}
                           </span>
                         </button>
