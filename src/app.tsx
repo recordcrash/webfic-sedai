@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import webficData, { getWebficTitle } from "../webfic-data"
 import { toast } from "sonner"
 import { t } from "./strings"
@@ -38,6 +38,9 @@ export const App = () => {
     initialState
   )
 
+  const [writtenByMeMap, setWrittenByMeMap] = useState<Record<string, boolean>>({})
+  const [wKeyPressed, setWKeyPressed] = useState(false)
+
   // document title
   useEffect(() => {
     document.title = t("title")
@@ -46,6 +49,21 @@ export const App = () => {
   // initialize umami user
   useEffect(() => {
     identifyUser()
+  }, [])
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "w" || e.key === "W") setWKeyPressed(true)
+    }
+    const up = (e: KeyboardEvent) => {
+      if (e.key === "w" || e.key === "W") setWKeyPressed(false)
+    }
+    window.addEventListener("keydown", down)
+    window.addEventListener("keyup", up)
+    return () => {
+      window.removeEventListener("keydown", down)
+      window.removeEventListener("keyup", up)
+    }
   }, [])
 
   // count read
@@ -119,6 +137,7 @@ export const App = () => {
                     {items.slice(0, 12).map((item) => {
                       const key = getWebficTitle(item)
                       const status = statusMap[key] ?? "none"
+                      const written = writtenByMeMap[key]
                       let bgClass = ""
                       if (status === "completed") bgClass = "bg-green-500"
                       else if (status === "inprogress")
@@ -128,9 +147,18 @@ export const App = () => {
                       return (
                         <button
                           key={key}
-                          className={`h-16 md:h-20 w-20 md:w-24 border-l break-words text-center shrink-0 flex-col justify-center p-1 overflow-hidden cursor-pointer text-xs ${bgClass}`}
+                          className={`relative h-16 md:h-20 w-20 md:w-24 border-l break-words text-center shrink-0 flex-col justify-center p-1 overflow-hidden cursor-pointer text-xs ${bgClass}`}
                           title={key}
-                          onClick={() =>
+                          onClick={() => {
+                            if (wKeyPressed) {
+                              setWrittenByMeMap((prev) => {
+                                const next = { ...prev }
+                                if (next[key]) delete next[key]
+                                else next[key] = true
+                                return next
+                              })
+                              return
+                            }
                             setStatusMap((prev) => {
                               const curr = prev[key] ?? "none"
                               const next = getNextStatus(curr)
@@ -139,11 +167,16 @@ export const App = () => {
                               else nextMap[key] = next
                               return nextMap
                             })
-                          }
+                          }}
                         >
                           <span className="leading-tight w-full break-words whitespace-normal line-clamp-4">
                             {key}
                           </span>
+                          {written && (
+                            <span className="absolute top-0 right-0 text-lg pointer-events-none">
+                              🪶
+                            </span>
+                          )}
                         </button>
                       )
                     })}
