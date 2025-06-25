@@ -7,6 +7,11 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      VITE_SITE_URL: ${{ secrets.VITE_SITE_URL }}
+      VITE_UMAMI_SCRIPT: ${{ secrets.VITE_UMAMI_SCRIPT }}
+      VITE_UMAMI_WEBSITE_ID: ${{ secrets.VITE_UMAMI_WEBSITE_ID }}
 
     steps:
       # 1 ▸ Check out the repo
@@ -18,6 +23,15 @@ jobs:
       # 3 ▸ Install dependencies
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Create .env.production
+        run: |
+          cat <<EOF > .env.production
+          VITE_SITE_URL="${VITE_SITE_URL}"
+          VITE_UMAMI_SCRIPT="${VITE_UMAMI_SCRIPT}"
+          VITE_UMAMI_WEBSITE_ID="${VITE_UMAMI_WEBSITE_ID}"
+          PROD=true
+          EOF
 
       # 4 ▸ Build the app
       - name: Build the app
