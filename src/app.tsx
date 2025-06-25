@@ -5,6 +5,8 @@ import { toast } from "sonner"
 import { t } from './strings'
 import { usePersistState } from "./hooks"
 
+const TABLE_VERSION = "v2"
+
 export const App = () => {
   const [selectedWebfic, setSelectedWebfic] = usePersistState<string[]>(
     "selectedWebfic",
@@ -87,7 +89,7 @@ export const App = () => {
         <div className="p-4 flex flex-col md:items-center">
           <div className="w-full overflow-x-auto">
             <div
-              className="flex flex-col border border-b-0 bg-white w-fit mx-auto"
+              className="relative flex flex-col border border-b-0 bg-white w-fit mx-auto"
               ref={wrapper}
             >
               <div className="border-b justify-between p-2 text-lg  font-bold flex">
@@ -175,6 +177,17 @@ export const App = () => {
                   </div>
                 )
               })}
+              <span
+                className="
+                  absolute bottom-1 right-1
+                  text-[8px]
+                  text-white
+                  [text-shadow:0_0_1px_rgba(0,0,0,0.8)]
+                  select-none pointer-events-none
+                "
+              >
+                {TABLE_VERSION}
+              </span>
             </div>
           </div>
         </div>
