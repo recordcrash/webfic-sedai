@@ -2,7 +2,7 @@ const EN = {
   title: 'Ages of Webfic',
   subtitle: 'Click to select webfic you have read',
   website: 'webfic.recordcrash.com',
-  watchedCount: 'I have read {{count}}/{{total}} webfic',
+  readCount: 'I have read {{count}}/{{total}} webfic',
   selectAll: 'Select All',
   clear: 'Clear',
   copyImage: 'Copy Image',
@@ -19,9 +19,10 @@ const EN = {
   madeBy: ', ',
   viewCode: 'View Code',
   otherProducts: 'Other products by the author: ',
-  watched: 'Watched',
-  notWatched: 'Not Watched',
-  none: 'None',
+  completed: 'Caught up',
+  inProgress: 'Reading',
+  dropped: 'Dropped',
+  none: 'Not Started',
 } as const
 
 export type StringKey = keyof typeof EN
