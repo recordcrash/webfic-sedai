@@ -9,8 +9,8 @@ import { SiteFooter } from "./components/SiteFooter"
 import type { Status } from "./types"
 import { copyImage, downloadImage } from "./utils/imageExport"
 import { decodeState } from "./utils/stateCodec"
-
-const TABLE_VERSION = "v2"
+import { identifyUser, trackStatusMap } from "./utils/analytics"
+import { TABLE_VERSION } from "./config"
 
 const STATUS_ORDER: Status[] = ["none", "completed", "inprogress", "dropped"]
 const getNextStatus = (curr: Status): Status => {
@@ -43,6 +43,11 @@ export const App = () => {
     document.title = t("title")
   }, [t])
 
+  // initialize umami user
+  useEffect(() => {
+    identifyUser()
+  }, [])
+
   // count read
   const readCount = Object.values(statusMap).reduce((sum, s) => {
     if (s === "inprogress") return sum + 0.5
@@ -63,6 +68,32 @@ export const App = () => {
     if (b === "≤2010") return 1
     return parseInt(a, 10) - parseInt(b, 10)
   })
+
+  const handleCopy = () => {
+    const promise = copyImage(wrapper.current!)
+    toast.promise(promise, {
+      success: t("copySuccess"),
+      loading: t("copying"),
+      error: (e) =>
+        t("copyFailed", {
+          error: e instanceof Error ? e.message : t("unknownError"),
+        }),
+    })
+    promise.then(() => trackStatusMap(statusMap))
+  }
+
+  const handleDownload = () => {
+    const promise = downloadImage(wrapper.current!)
+    toast.promise(promise, {
+      success: t("downloadSuccess"),
+      loading: t("downloading"),
+      error: (e) =>
+        t("downloadFailed", {
+          error: e instanceof Error ? e.message : t("unknownError"),
+        }),
+    })
+    promise.then(() => trackStatusMap(statusMap))
+  }
 
   return (
     <div className="flex flex-col gap-4 pb-10">
@@ -166,32 +197,14 @@ export const App = () => {
         <button
           type="button"
           className="border rounded-md px-4 py-2 inline-flex"
-          onClick={() =>
-            toast.promise(copyImage(wrapper.current), {
-              success: t("copySuccess"),
-              loading: t("copying"),
-              error: (e) =>
-                t("copyFailed", {
-                  error: e instanceof Error ? e.message : t("unknownError"),
-                }),
-            })
-          }
+          onClick={handleCopy}
         >
           {t("copyImage")}
         </button>
         <button
           type="button"
           className="border rounded-md px-4 py-2 inline-flex"
-          onClick={() =>
-            toast.promise(downloadImage(wrapper.current), {
-              success: t("downloadSuccess"),
-              loading: t("downloading"),
-              error: (e) =>
-                t("downloadFailed", {
-                  error: e instanceof Error ? e.message : t("unknownError"),
-                }),
-            })
-          }
+          onClick={handleDownload}
         >
           {t("downloadImage")}
         </button>

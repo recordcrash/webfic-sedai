@@ -1,0 +1,1 @@
+export const TABLE_VERSION = "v2"
