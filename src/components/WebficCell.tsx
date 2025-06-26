@@ -33,7 +33,7 @@ export function WebficCell({
   return (
     <button
       className={[
-        "relative h-16 md:h-20 w-20 md:w-24 border-l",
+        "relative h-20 w-24 border-l",
         "text-center shrink-0 p-1 cursor-pointer text-xs",
         bgClass,
       ].join(" ")}
