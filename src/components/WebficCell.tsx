@@ -40,7 +40,7 @@ export function WebficCell({
       title={key}
       onClick={handleClick}
     >
-      <span className="leading-tight w-full whitespace-normal line-clamp-4">
+      <span className="leading-normal w-full whitespace-normal line-clamp-4">
         {key}
       </span>
       {written && <span className="absolute top-0 right-0 text-lg">🪶</span>}

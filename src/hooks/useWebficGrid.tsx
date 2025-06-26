@@ -25,11 +25,11 @@ export function useWebficGrid(searchString: string | null) {
       const key = num <= 2010 ? "≤2010" : year
       b[key] = (b[key] || []).concat(items)
     })
-    const sortedYears = Object.keys(b).sort((a, b) => {
-      if (a === "≤2010") return -1
-      if (b === "≤2010") return 1
-      return +a - +b
-    })
+    const sortedYears = Object.keys(b).sort((a, b) =>
+      a === "≤2010" ? -1
+      : b === "≤2010" ? 1
+      : a.localeCompare(b, undefined, { numeric: true })
+    )
     return { bucketed: b, years: sortedYears }
   }, [])
 

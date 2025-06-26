@@ -1,4 +1,3 @@
-// src/hooks.tsx
 import { useEffect, useState, useCallback } from "react";
 
 export const usePersistState = <T,>(

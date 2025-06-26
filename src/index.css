@@ -3,3 +3,11 @@
 button {
   @apply cursor-pointer;
 }
+
+:root {
+  --ui-font: "Open Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  font-family: var(--ui-font);
+}
