@@ -1,4 +1,3 @@
-// src/app.tsx
 import { useRef, useEffect } from "react"
 import { toast } from "sonner"
 import { t } from "./strings"
@@ -37,6 +36,7 @@ export const App = () => {
     if (s === "completed" || s === "dropped") return sum + 1
     return sum
   }, 0)
+  const writtenCount = Object.values(writtenMap).filter(Boolean).length
 
   function handleCopy() {
     const promise = copyImage(wrapper.current!)
@@ -72,7 +72,7 @@ export const App = () => {
             ref={wrapper}
             className="relative flex flex-col border bg-white w-fit mx-auto"
           >
-            <Header readCount={readCount} total={totalWebfic} />
+            <Header readCount={readCount} writtenCount={writtenCount} total={totalWebfic} />
 
             {years.map(year => (
               <YearRow

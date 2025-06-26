@@ -1,5 +1,16 @@
 import { t } from "../strings"
-export function Header({ readCount, total }: { readCount: number; total: number }) {
+
+interface HeaderProps {
+  readCount: number
+  total: number
+  writtenCount?: number
+}
+
+export function Header({
+  readCount,
+  total,
+  writtenCount = 0,
+}: HeaderProps) {
   return (
     <div className="border-b justify-between p-2 text-lg font-bold flex">
       <h1>
@@ -11,7 +22,8 @@ export function Header({ readCount, total }: { readCount: number; total: number 
       </h1>
       <span className="shrink-0 whitespace-nowrap">
         {t("readCount", { count: readCount, total })}
+        {writtenCount > 0 && <> {t("writtenCount", { count: writtenCount })}</>}
       </span>
     </div>
-  )
+)
 }

@@ -5,6 +5,7 @@ const EN = {
   websiteAuthor: 'Makin',
   websiteName: 'Record Crash',
   readCount: 'I have read {{count}}/{{total}} webfics',
+  writtenCount: 'and written {{count}}',
   selectAll: 'Select All',
   clear: 'Clear',
   copyImage: 'Copy Image',
