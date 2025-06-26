@@ -1,4 +1,4 @@
-type WebficItem = {
+export type WebficItem = {
   title: string
 }
 
