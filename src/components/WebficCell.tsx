@@ -43,7 +43,7 @@ export function WebficCell({
       <span className="leading-normal w-full whitespace-normal line-clamp-4">
         {key}
       </span>
-      {written && <span className="absolute top-0 right-0 text-lg">🪶</span>}
+      {written && <span className="absolute top-0 right-0 text-lg transform scale-x-[-1] pointer-events-none">🪶</span>}
     </button>
   )
 }
