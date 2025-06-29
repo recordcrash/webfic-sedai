@@ -204,4 +204,62 @@ export const getWebficTitle = (webfic: WebficItem): string => {
   return webfic.title
 }
 
+export interface BadgeDef {
+  name: string
+  description: string
+  image: string
+  works: string[]
+}
+
+export const badgeDefinitions: BadgeDef[] = [
+  {
+    name: "Rationalist",
+    description: "Read all the works by Eliezer Yudkowksy",
+    image: "yud.png",
+    works: [
+      "Harry Potter and the Methods of Rationality",
+      "Three Worlds Collide",
+      // "The Waves Arisen",
+      // "The Erogamer",
+      "Planecrash",
+    ],
+  },
+  {
+    name: "Whale",
+    description: "Read all the works by Alexander Wales",
+    image: "wales.png",
+    works: [  
+      "Worth the Candle",
+      "Shadows of the Limelight",
+      "The Metropolitan Man",
+      "This Used to Be About Dungeons",
+      "Thresholder"
+    ]
+  },
+  {
+    name: "Ender of History",
+    description: "Read all the works by Bavitz",
+    image: "bavitz.png",
+    works: [
+      "Fargo",
+      "Modern Cannibals",
+      "When I Win the World Ends"
+    ]
+  },
+  {
+    name: "Stockholm Syndrome",
+    description: "Read all the works by Wildbow",
+    image: "wildbow.png",
+    works: [
+      "Worm",
+      "Pact",
+      "Twig",
+      "Pale",
+      "Ward",
+      "Claw",
+      "Seek",
+    ]
+  }
+]
+
 export default data

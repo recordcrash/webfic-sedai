@@ -102,8 +102,8 @@ export const App = () => {
               />
             ))}
 
-            <LegendFooter />
-            <span className="absolute bottom-1 right-1 text-[8px] bg-white bg-opacity-75 px-0.5 py-px rounded">
+            <LegendFooter statusMap={statusMap} />
+            <span className="absolute top-1 right-1 text-[8px] bg-white bg-opacity-75 px-0.5 py-px rounded">
               {TABLE_VERSION}
             </span>
           </div>
