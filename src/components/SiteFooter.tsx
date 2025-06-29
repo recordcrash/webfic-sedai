@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { t } from "../strings"
+import { t } from "../constants/strings"
 import { Modal } from "./Modal"
 
 export function SiteFooter() {
@@ -16,8 +16,7 @@ export function SiteFooter() {
           className="underline"
         >
           {t("website")}
-        </a>
-        {" "}
+        </a>{" "}
         <a
           href="https://github.com/recordcrash/webfic-sedai"
           target="_blank"

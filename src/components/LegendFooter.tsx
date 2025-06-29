@@ -1,4 +1,4 @@
-import { t } from "../strings"
+import { t } from "../constants/strings"
 import type { Status } from "../types"
 import { Badges } from "./Badges"
 

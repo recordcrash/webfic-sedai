@@ -1,6 +1,5 @@
-import { getWebficTitle } from "../../webfic-data"
-import type { WebficItem } from "../../webfic-data"
-import type { Status } from "../types"
+import { getWebficTitle } from "../utils/webfic"
+import type { Status, WebficItem } from "../types"
 
 interface Props {
   item: WebficItem
@@ -43,7 +42,11 @@ export function WebficCell({
       <span className="leading-normal w-full whitespace-normal line-clamp-4">
         {key}
       </span>
-      {written && <span className="absolute top-0 right-0 text-lg transform scale-x-[-1] pointer-events-none">🪶</span>}
+      {written && (
+        <span className="absolute top-0 right-0 text-lg transform scale-x-[-1] pointer-events-none">
+          🪶
+        </span>
+      )}
     </button>
   )
 }

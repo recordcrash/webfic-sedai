@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react"
 import { toast } from "sonner"
-import { t } from "./strings"
+import { t } from "./constants/strings"
 import { usePersistState } from "./hooks/usePersistState"
 import { useWebficGrid } from "./hooks/useWebficGrid"
 import { useKeyPress } from "./hooks/useKeyPress"
@@ -43,7 +43,7 @@ export const App = () => {
     toast.promise(promise, {
       loading: t("copying"),
       success: t("copySuccess"),
-      error: e =>
+      error: (e) =>
         t("copyFailed", {
           error: e instanceof Error ? e.message : t("unknownError"),
         }),
@@ -56,7 +56,7 @@ export const App = () => {
     toast.promise(promise, {
       loading: t("downloading"),
       success: t("downloadSuccess"),
-      error: e =>
+      error: (e) =>
         t("downloadFailed", {
           error: e instanceof Error ? e.message : t("unknownError"),
         }),
@@ -72,9 +72,13 @@ export const App = () => {
             ref={wrapper}
             className="relative flex flex-col border bg-white w-fit mx-auto"
           >
-            <Header readCount={readCount} writtenCount={writtenCount} total={totalWebfic} />
+            <Header
+              readCount={readCount}
+              writtenCount={writtenCount}
+              total={totalWebfic}
+            />
 
-            {years.map(year => (
+            {years.map((year) => (
               <YearRow
                 key={year}
                 yearLabel={year}
@@ -82,8 +86,8 @@ export const App = () => {
                 statusMap={statusMap}
                 writtenMap={writtenMap}
                 wKeyPressed={wKeyPressed}
-                onToggleStatus={key =>
-                  setStatusMap(prev => {
+                onToggleStatus={(key) =>
+                  setStatusMap((prev) => {
                     const next = getNextStatus(prev[key] ?? "none")
                     const m = { ...prev }
                     if (next === "none") delete m[key]
@@ -91,8 +95,8 @@ export const App = () => {
                     return m
                   })
                 }
-                onToggleWritten={key =>
-                  setWrittenMap(prev => {
+                onToggleWritten={(key) =>
+                  setWrittenMap((prev) => {
                     const m = { ...prev }
                     if (m[key]) delete m[key]
                     else m[key] = true
@@ -116,9 +120,7 @@ export const App = () => {
           className="border rounded-md px-4 py-2 inline-flex"
           onClick={() =>
             setStatusMap(
-              Object.fromEntries(
-                allTitles.map(title => [title, "completed"])
-              )
+              Object.fromEntries(allTitles.map((title) => [title, "completed"]))
             )
           }
         >

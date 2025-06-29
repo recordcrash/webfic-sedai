@@ -1,15 +1,16 @@
 import { useMemo } from "react"
-import webficData, { getWebficTitle } from "../../webfic-data"
+import { data as webficData, rowOrder, getWebficTitle } from "../utils/webfic"
 import { decodeState } from "../utils/stateCodec"
+import type { WebficItem } from "../types"
 
 export function useWebficGrid(searchString: string | null) {
-  // build flat list of titles
-  const allTitles = useMemo(
-    () =>
-      Object.values(webficData)
-        .flatMap(year => year.map(item => getWebficTitle(item)).slice(0, 12)),
-    []
-  )
+  // build flat list of titles (max 12 per row)
+  const allTitles = useMemo(() => {
+    return rowOrder.flatMap((group: string) => {
+      const items = webficData[group] as WebficItem[]
+      return items.slice(0, 12).map((item: WebficItem) => getWebficTitle(item))
+    })
+  }, [])
 
   // initial URL state
   const initialState = useMemo(
@@ -17,21 +18,9 @@ export function useWebficGrid(searchString: string | null) {
     [searchString, allTitles]
   )
 
-  // bucket by year, folding all ≤2010 into one group
-  const { bucketed, years } = useMemo(() => {
-    const b: Record<string, typeof webficData[string]> = {}
-    Object.entries(webficData).forEach(([year, items]) => {
-      const num = +year.replace(/\D/g, "")
-      const key = num <= 2010 ? "≤2010" : year
-      b[key] = (b[key] || []).concat(items)
-    })
-    const sortedYears = Object.keys(b).sort((a, b) =>
-      a === "≤2010" ? -1
-      : b === "≤2010" ? 1
-      : a.localeCompare(b, undefined, { numeric: true })
-    )
-    return { bucketed: b, years: sortedYears }
-  }, [])
+  // data and row keys are prebuilt
+  const bucketed = webficData
+  const years = rowOrder
 
   return { allTitles, initialState, bucketed, years }
 }
